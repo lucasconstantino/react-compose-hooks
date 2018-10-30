@@ -6,8 +6,17 @@ import { checkPropTypes } from 'prop-types'
  * @param {[Function]} validators PropType validation for each index of the array.
  * @return {Function} validator.
  */
-const arrayShape = (...validators) => {
+const arrayShape = validators => {
   const checkType = (isRequired, props, propName, componentName, loc) => {
+    if (
+      !Array.isArray(validators) ||
+      validators.some(validator => typeof validator !== 'function')
+    ) {
+      return new Error(
+        `Property ${loc} \`${propName}\` of component \`${componentName}\` has invalid PropType notation inside of arrayShape.`
+      )
+    }
+
     const value = props[propName]
 
     // eslint-disable-next-line eqeqeq
@@ -16,7 +25,7 @@ const arrayShape = (...validators) => {
         const missingType = value === null ? 'null' : 'undefined'
 
         return new Error(
-          `The ${location} \`${propName}\` is marked as required in \`${componentName}\`, but its value is \`${missingType}\``
+          `The ${loc} \`${propName}\` is marked as required in \`${componentName}\`, but its value is \`${missingType}\`.`
         )
       } else {
         return null
@@ -25,7 +34,7 @@ const arrayShape = (...validators) => {
 
     if (!Array.isArray(value)) {
       return new Error(
-        `Invalid ${loc} \`${propName}\` of type \`${typeof value}\` supplied to \`${componentName}\`, expected array`
+        `Invalid ${loc} \`${propName}\` of type \`${typeof value}\` supplied to \`${componentName}\`, expected array.`
       )
     }
 
