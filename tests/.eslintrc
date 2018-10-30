@@ -1,0 +1,12 @@
+{
+  "globals": {
+    "jest": true,
+    "expect": true,
+    "afterEach": true,
+    "describe": true,
+    "it": true
+  },
+  "rules": {
+    "react/button-has-type": 0
+  }
+}
