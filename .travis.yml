@@ -3,3 +3,5 @@ node_js:
   - 'stable'
   - '10'
   - '9'
+after_script:
+  - "npm run codecov"
