@@ -37,7 +37,7 @@ The library provide a `hooks` higher-order component, which can be used as follo
 import { useState } from 'react'
 import { hooks } from 'react-compose-hooks'
 
-const Counter = ({ state: [count, setCount] }) => (
+const Counter = ({ counter: [count, setCount] }) => (
   <div>
     Count {count}
     <button onClick={() => setCount(count + 1)}>Increase</button>
