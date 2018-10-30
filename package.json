@@ -34,7 +34,11 @@
   "jest": {
     "moduleNameMapper": {
       "react-compose-hooks": "<rootDir>/src"
-    }
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
   },
   "peerDependencies": {
     "react": "^16.6.0"
