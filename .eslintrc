@@ -1,0 +1,3 @@
+{
+  "extends": "@strv/javascript/environments/react/v16"
+}
