@@ -1,15 +1,6 @@
 import React from 'react'
+import { applyHooks } from './utils'
 
-const hooks = map => Component => props => {
-  const hooked = {}
-
-  for (let key in map) {
-    if (map.hasOwnProperty(key)) {
-      hooked[key] = map[key]({ ...props, ...hooked })
-    }
-  }
-
-  return <Component {...props} {...hooked} />
-}
+const hooks = map => Component => props => <Component {...applyHooks(map, props)} />
 
 export { hooks }
