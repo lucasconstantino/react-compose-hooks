@@ -1,0 +1,52 @@
+{
+  "name": "react-compose-hooks",
+  "version": "0.1.0",
+  "description": "React Hooks composition library.",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "clean": "rm -Rf lib",
+    "compile": "npm run clean && babel src -d lib",
+    "lint": "eslint src tests",
+    "test": "jest",
+    "prepush": "npm run lint && npm run test",
+    "prepublish": "npm run lint && npm run test && npm run compile"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "functional",
+    "composition"
+  ],
+  "author": "Lucas Constantino Silva <lucasconstantinosilva@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasconstantino/react-compose-hooks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lucasconstantino/react-compose-hooks/issues"
+  },
+  "homepage": "https://github.com/lucasconstantino/react-compose-hooks#readme",
+  "jest": {
+    "moduleNameMapper": {
+      "react-compose-hooks": "<rootDir>/src"
+    }
+  },
+  "peerDependencies": {
+    "react": "^16.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
+    "eslint": "^5.8.0",
+    "jest": "^23.6.0",
+    "react": "^16.6.0"
+  }
+}
