@@ -5,6 +5,18 @@ import { render, fireEvent, cleanup } from 'react-testing-library'
 import { hooks, arrayShape } from 'react-compose-hooks'
 import 'jest-dom/extend-expect'
 
+const withValue = value => expect.arrayContaining([value, expect.any(Function)])
+const withValues = values =>
+  expect.objectContaining(
+    Object.keys(values).reduce(
+      (carry, key) => ({
+        ...carry,
+        [key]: withValue(values[key]),
+      }),
+      {}
+    )
+  )
+
 describe('hooks', () => {
   afterEach(cleanup)
   afterEach(jest.clearAllMocks)
@@ -29,12 +41,7 @@ describe('hooks', () => {
     render(<EnhancedCounter />)
 
     expect(Counter).toHaveBeenCalledTimes(1)
-    expect(Counter).toHaveBeenCalledWith(
-      expect.objectContaining({
-        counter: expect.arrayContaining([0, expect.any(Function)]),
-      }),
-      context
-    )
+    expect(Counter).toHaveBeenCalledWith(withValues({ counter: 0 }), context)
   })
 
   it('should update component when hooks fired', () => {
@@ -44,12 +51,7 @@ describe('hooks', () => {
     fireEvent.click(getByText('Increase'))
     expect(Counter).toHaveBeenCalledTimes(2)
 
-    expect(Counter).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        counter: expect.arrayContaining([1, expect.any(Function)]),
-      }),
-      context
-    )
+    expect(Counter).toHaveBeenLastCalledWith(withValues({ counter: 1 }), context)
   })
 
   it('should call hook builder with any provided prop', () => {
@@ -87,32 +89,31 @@ describe('hooks', () => {
 
     const EnhancedComponent = hooks({ counter, texter })(Component)
 
-    const withValue = value => expect.arrayContaining([value, expect.any(Function)])
-    const withValues = (counter, text) =>
-      expect.objectContaining({
-        counter: withValue(counter),
-        texter: withValue(text),
-      })
-
     it('should inject multiple hooked properties', () => {
       render(<EnhancedComponent />)
       expect(Component).toHaveBeenCalledTimes(1)
-      expect(Component).toHaveBeenCalledWith(withValues(0, ''), context)
+      expect(Component).toHaveBeenCalledWith(withValues({ counter: 0, texter: '' }), context)
     })
 
     it('should update component when hooks fired', () => {
       const { getByPlaceholderText, getByText } = render(<EnhancedComponent />)
 
       expect(Component).toHaveBeenCalledTimes(1)
-      expect(Component).toHaveBeenLastCalledWith(withValues(0, ''), context)
+      expect(Component).toHaveBeenLastCalledWith(withValues({ counter: 0, texter: '' }), context)
 
       fireEvent.change(getByPlaceholderText('Type here'), { target: { value: 'content' } })
       expect(Component).toHaveBeenCalledTimes(2)
-      expect(Component).toHaveBeenLastCalledWith(withValues(0, 'content'), context)
+      expect(Component).toHaveBeenLastCalledWith(
+        withValues({ counter: 0, texter: 'content' }),
+        context
+      )
 
       fireEvent.click(getByText('Increase'))
       expect(Component).toHaveBeenCalledTimes(3)
-      expect(Component).toHaveBeenLastCalledWith(withValues(1, 'content'), context)
+      expect(Component).toHaveBeenLastCalledWith(
+        withValues({ counter: 1, texter: 'content' }),
+        context
+      )
     })
 
     it('should call hook builder with any previous hook value', () => {
@@ -127,6 +128,74 @@ describe('hooks', () => {
       fireEvent.click(getByText('Increase'))
       expect(counter).toHaveBeenCalledTimes(2)
       expect(texter).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('factory syntax', () => {
+    const factory = jest.fn(() => ({ counter }))
+    const EnhancedCounter = hooks(factory)(Counter)
+
+    it('should inject hooked properties', () => {
+      render(<EnhancedCounter />)
+
+      expect(Counter).toHaveBeenCalledTimes(1)
+      expect(Counter).toHaveBeenCalledWith(withValues({ counter: 0 }), context)
+    })
+
+    it('should update component when hooks fired', () => {
+      const { getByText } = render(<EnhancedCounter />)
+
+      expect(Counter).toHaveBeenCalledTimes(1)
+      fireEvent.click(getByText('Increase'))
+      expect(Counter).toHaveBeenCalledTimes(2)
+
+      expect(Counter).toHaveBeenLastCalledWith(withValues({ counter: 1 }), context)
+    })
+
+    it('should call hook builder with any provided prop', () => {
+      render(<EnhancedCounter prop="value" />)
+      expect(counter).toHaveBeenCalledWith({ prop: 'value' })
+    })
+
+    it('should call hooks factory with any provided prop', () => {
+      render(<EnhancedCounter prop="value" />)
+      expect(factory).toHaveBeenCalledWith({ prop: 'value' })
+    })
+
+    it('should rebuild hook builder when hooks fired', () => {
+      const { getByText } = render(<EnhancedCounter />)
+      expect(counter).toHaveBeenCalledTimes(1)
+      fireEvent.click(getByText('Increase'))
+      expect(counter).toHaveBeenCalledTimes(2)
+    })
+
+    it('should rebuild hooks factory when hooks fired', () => {
+      const { getByText } = render(<EnhancedCounter />)
+      expect(factory).toHaveBeenCalledTimes(1)
+      fireEvent.click(getByText('Increase'))
+      expect(factory).toHaveBeenCalledTimes(2)
+    })
+
+    describe('factory with resolved hooked values', () => {
+      const factory = jest.fn(() => ({ counter: useState(0) }))
+      const EnhancedCounter = hooks(factory)(Counter)
+
+      it('should inject hooked properties', () => {
+        render(<EnhancedCounter />)
+
+        expect(Counter).toHaveBeenCalledTimes(1)
+        expect(Counter).toHaveBeenCalledWith(withValues({ counter: 0 }), context)
+      })
+
+      it('should update component when hooks fired', () => {
+        const { getByText } = render(<EnhancedCounter />)
+
+        expect(Counter).toHaveBeenCalledTimes(1)
+        fireEvent.click(getByText('Increase'))
+        expect(Counter).toHaveBeenCalledTimes(2)
+
+        expect(Counter).toHaveBeenLastCalledWith(withValues({ counter: 1 }), context)
+      })
     })
   })
 })
