@@ -1,3 +1,6 @@
 {
-  "extends": "@strv/javascript/environments/react/v16"
+  "extends": "@strv/javascript/environments/react/v16",
+  "parserOptions": {
+    "ecmaVersion": 9
+  }
 }
