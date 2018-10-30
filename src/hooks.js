@@ -5,7 +5,7 @@ const hooks = map => Component => props => {
 
   for (let key in map) {
     if (map.hasOwnProperty(key)) {
-      hooked[key] = map[key](props)
+      hooked[key] = map[key]({ ...props, ...hooked })
     }
   }
 
