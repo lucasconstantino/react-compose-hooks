@@ -11,7 +11,7 @@ React hooks are [here](https://reactjs.org/docs/hooks-intro.html). And [here](ht
 
 1. **Side-effect:** no one really like them, and within the React ecosystem we've been trying to get rid of them - or at least encapsulate them for good. Hooks seems to go in the other direction, when it encourages people to call a function and expect a dynamic return inside a previously purely functional component. Which leads to...
 2. **Not functional:** I might be completely wrong with this one, but it seems we've just buried some concepts of functional programming when embracing hooks. No more pure functions, which should _always return the same result when called with the same arguments_. Which also leeds to...
-3. **Testability issues:** APIs are certaily to come, but so far we are all sure that using hooks will not encourage testable code at all.
+3. **Testability issues:** APIs are certainly to come, but so far we are all sure that using hooks will not encourage testable code at all.
 
 Having all that said, we have to point the obvious answer to all these problems, which is: we already had these problems with classes. This is true, but now we are making the distinction between logic and presentational components much more subtle. Experienced developers are sure going to keep things separetely enough, but what about newcommers? They were once tempted to use classes everywhere, and the introduction of purely functional components was a good way to teach them to split logic from presentation. The difference between smart/dumb (container/component, whatever) is now way more difficult to grasp.
 
