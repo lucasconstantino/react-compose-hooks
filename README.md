@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/lucasconstantino/react-compose-hooks.svg?branch=master)](https://travis-ci.org/lucasconstantino/react-compose-hooks)
 [![coverage](https://img.shields.io/codecov/c/github/lucasconstantino/react-compose-hooks.svg?style=flat-square)](https://codecov.io/github/lucasconstantino/react-compose-hooks)
 [![npm version](https://img.shields.io/npm/v/react-compose-hooks.svg?style=flat-square)](https://www.npmjs.com/package/react-compose-hooks)
-[![sponsored by Taller](https://raw.githubusercontent.com/TallerWebSolutions/tallerwebsolutions.github.io/master/sponsored-by-taller.png)](https://taller.net.br/en/)
+[![sponsored by Taller](https://raw.githubusercontent.com/TallerWebSolutions/tallerwebsolutions.github.io/master/sponsored-by-taller.png)](https://taller.net.br/en/) [![Greenkeeper badge](https://badges.greenkeeper.io/lucasconstantino/react-compose-hooks.svg)](https://greenkeeper.io/)
 
 ## Motivation
 
